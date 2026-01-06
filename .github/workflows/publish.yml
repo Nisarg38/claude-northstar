@@ -1,0 +1,99 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'package.json'
+      - 'bin/**'
+      - 'templates/**'
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify package.json version changed
+        id: version-check
+        run: |
+          if git diff HEAD~1 HEAD --quiet package.json; then
+            echo "No version change detected in package.json"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Version change detected"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Verify package
+        run: |
+          npm pack --dry-run
+          echo "Package contents verified"
+
+      - name: Get version from package.json
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Package version: $VERSION"
+
+      - name: Check if version exists on npm
+        id: version-exists
+        run: |
+          VERSION="${{ steps.package-version.outputs.version }}"
+          if npm view claude-northstar@$VERSION version > /dev/null 2>&1; then
+            echo "Version $VERSION already exists on npm"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version $VERSION is new"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        if: |
+          (github.event_name == 'release' || 
+           steps.version-check.outputs.changed == 'true' || 
+           github.event_name == 'workflow_dispatch') &&
+          steps.version-exists.outputs.exists == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "Publishing claude-northstar@${{ steps.package-version.outputs.version }} to npm"
+          npm publish --access public
+
+      - name: Skip publish (version unchanged)
+        if: |
+          steps.version-check.outputs.changed == 'false' &&
+          github.event_name != 'release' &&
+          github.event_name != 'workflow_dispatch'
+        run: |
+          echo "Skipping publish: No version change detected"
+
+      - name: Skip publish (version exists)
+        if: steps.version-exists.outputs.exists == 'true'
+        run: |
+          echo "Skipping publish: Version ${{ steps.package-version.outputs.version }} already exists on npm"

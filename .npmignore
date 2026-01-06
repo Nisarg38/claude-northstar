@@ -1,0 +1,40 @@
+# Development files
+.git/
+.github/
+*.md
+!README.md
+
+# CI/CD
+.github/
+
+# Documentation
+CLAUDE.md
+
+# Scripts
+install.sh
+uninstall.sh
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Misc
+.env
+.env.local
