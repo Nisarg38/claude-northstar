@@ -1,6 +1,6 @@
 {
   "name": "claude-northstar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Goal-oriented development framework for Claude Code - transform CLI agents into autonomous project partners",
   "bin": {
     "claude-northstar": "./bin/cli.js"
