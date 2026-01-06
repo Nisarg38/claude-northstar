@@ -1,0 +1,32 @@
+{
+  "$schema": "project-state-schema",
+  "version": "1.0.0",
+  "lastAnalyzed": null,
+  "projectPhase": "not_started",
+
+  "milestones": [],
+
+  "currentFocus": null,
+
+  "gaps": [],
+
+  "nextPriority": null,
+
+  "codebaseAnalysis": {
+    "totalFiles": 0,
+    "languages": [],
+    "frameworks": [],
+    "hasTests": false,
+    "testCoverage": null,
+    "lastScanned": null
+  },
+
+  "sessionHistory": [],
+
+  "_comments": {
+    "milestones": "Array of {id, title, description, status: 'pending'|'in_progress'|'done', progress: 0-1, completedAt, blockers: []}",
+    "gaps": "Array of strings describing what's missing vs the north-star vision",
+    "projectPhase": "One of: not_started, research, planning, building, testing, complete",
+    "currentFocus": "The milestone id currently being worked on"
+  }
+}

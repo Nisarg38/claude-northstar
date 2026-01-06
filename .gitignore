@@ -1,0 +1,17 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if testing)
+node_modules/
+
+# Optional: Don't track harness state in repo template
+# Uncomment these if you want a clean template
+# .claude/harness/project-state.json
+# .claude/harness/progress-log.md

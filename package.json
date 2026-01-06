@@ -1,0 +1,36 @@
+{
+  "name": "claude-northstar",
+  "version": "0.1.0",
+  "description": "Goal-oriented development framework for Claude Code - transform CLI agents into autonomous project partners",
+  "bin": {
+    "claude-northstar": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "node bin/cli.js --help"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "autonomous",
+    "agent",
+    "harness",
+    "llm",
+    "development"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nisarg38/claude-northstar"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "bin/",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ]
+}
